@@ -6,17 +6,18 @@ This project studies the logistic difference equation:
 p_(n+1) = k * p_n * (1 - p_n)
 ```
 
-The program calculates sequence values for different choices of `k` and `p0`, prints the values in the terminal, and saves plots as PNG files in the `graphs` folder.
+The program calculates sequence values for different choices of `k` and `p0`.
+It prints the values in the terminal and saves graphs as PNG files.
 
 ## Requirements
 
 - Python 3
 - matplotlib
 
-Install matplotlib if needed:
+Install matplotlib with:
 
 ```bash
-python -m pip install matplotlib
+pip install matplotlib
 ```
 
 ## How to Run
@@ -31,7 +32,8 @@ The program will:
 
 - create the `graphs` folder if it does not exist
 - print all sequence values in the terminal
-- save all plots as PNG files in `graphs`
+- save all PNG graphs in the `graphs` folder
+- create a comparison graph for `p0 = 0.500` and `p0 = 0.501` when `k = 3.8`
 
 ## Files
 
