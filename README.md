@@ -9,6 +9,32 @@ p_(n+1) = k * p_n * (1 - p_n)
 The program calculates sequence values for different choices of `k` and `p0`.
 It prints the values in the terminal and saves graphs as PNG files.
 
+## Visual Preview
+
+### From Stability to Chaos
+
+![Bifurcation diagram](presentation_graphs/bifurcation_diagram_presentation.png)
+
+Shows how the logistic sequence changes as the growth parameter `k` increases: stable convergence, period doubling, and chaos.
+
+### Iteration Process
+
+![Process map](presentation_graphs/process_map.png)
+
+Explains the iteration process visually: start from `p0`, apply `f(p) = kp(1-p)`, get the next value, and repeat.
+
+### Cobweb Behavior
+
+![Cobweb grid](presentation_graphs/cobweb_grid.png)
+
+Compares convergence, period-2 cycles, period doubling, and chaotic behavior using cobweb diagrams.
+
+### Sensitivity to Initial Conditions
+
+![Sensitivity comparison](presentation_graphs/sensitivity_comparison.png)
+
+Shows how two very close initial values, `p0 = 0.500` and `p0 = 0.501`, eventually separate when `k = 3.8`.
+
 ## Requirements
 
 - Python 3
@@ -52,6 +78,13 @@ python presentation_visuals.py
 
 New visuals are saved in `presentation_graphs/`.
 PNG files are useful for quick viewing, and PDF files are better for LaTeX/Beamer.
+
+## Presentation Files
+
+- normal experiment graphs are in `graphs/`
+- presentation-quality visuals are in `presentation_graphs/`
+- PDF versions are included for LaTeX/Beamer
+- `latex_figures_snippet.tex` contains ready-to-paste LaTeX figure code
 
 ## Files
 
