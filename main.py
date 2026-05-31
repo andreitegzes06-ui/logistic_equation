@@ -66,6 +66,71 @@ def plot_comparison(k, p0_a, p0_b, n, filename):
     plt.close()
 
 
+def plot_bifurcation_diagram(filename):
+    """Plot long-term behavior for many values of k."""
+    k_values = []
+    p_values = []
+
+    # Use 1000 k values from 2.5 to 4.0.
+    for i in range(1000):
+        k = 2.5 + i * (4.0 - 2.5) / 999
+        p = 0.5
+
+        # Ignore the first 200 terms so only long-term behavior remains.
+        for _ in range(200):
+            p = k * p * (1 - p)
+
+        # Plot the next 100 terms for this k value.
+        for _ in range(100):
+            p = k * p * (1 - p)
+            k_values.append(k)
+            p_values.append(p)
+
+    plt.style.use("dark_background")
+    plt.figure(figsize=(9, 5))
+    plt.scatter(k_values, p_values, s=0.2, color="white")
+    plt.title("Bifurcation Diagram for the Logistic Equation")
+    plt.xlabel("k")
+    plt.ylabel("p_n")
+    plt.grid(True, alpha=0.2)
+    plt.tight_layout()
+    plt.savefig(filename, dpi=200)
+    plt.close()
+    plt.style.use("default")
+
+
+def plot_cobweb(k, p0, n, filename):
+    """Plot a cobweb diagram for the logistic equation."""
+    x_values = [i / 500 for i in range(501)]
+    curve_values = [k * x * (1 - x) for x in x_values]
+
+    plt.style.use("dark_background")
+    plt.figure(figsize=(6, 6))
+    plt.plot(x_values, curve_values, color="#4cc9f0", label="y = kx(1 - x)")
+    plt.plot(x_values, x_values, color="#f72585", label="y = x")
+
+    p = p0
+
+    # Draw the vertical and horizontal steps of the cobweb.
+    for _ in range(n):
+        next_p = k * p * (1 - p)
+        plt.plot([p, p], [p, next_p], color="white", linewidth=0.8)
+        plt.plot([p, next_p], [next_p, next_p], color="white", linewidth=0.8)
+        p = next_p
+
+    plt.title(f"Cobweb Diagram: k = {k}, p0 = {p0}")
+    plt.xlabel("p_n")
+    plt.ylabel("p_(n+1)")
+    plt.xlim(0, 1)
+    plt.ylim(0, 1)
+    plt.grid(True, alpha=0.2)
+    plt.legend()
+    plt.tight_layout()
+    plt.savefig(filename, dpi=200)
+    plt.close()
+    plt.style.use("default")
+
+
 def print_sequence(title, values):
     """Print the sequence values in a readable format."""
     print(title)
@@ -109,6 +174,17 @@ def main():
     plot_comparison(3.8, 0.500, 0.501, 100, comparison_file)
     print("Comparison graph: k = 3.8, p0 = 0.500 and p0 = 0.501")
     print(f"Saved as {comparison_file}")
+    print()
+
+    plot_bifurcation_diagram(graphs_folder / "bifurcation_diagram.png")
+    plot_cobweb(2.8, 0.5, 30, graphs_folder / "cobweb_k2_8.png")
+    plot_cobweb(3.2, 0.5, 30, graphs_folder / "cobweb_k3_2.png")
+    plot_cobweb(3.8, 0.5, 50, graphs_folder / "cobweb_k3_8.png")
+    print("Extra visualizations saved:")
+    print("graphs/bifurcation_diagram.png")
+    print("graphs/cobweb_k2_8.png")
+    print("graphs/cobweb_k3_2.png")
+    print("graphs/cobweb_k3_8.png")
     print()
 
     print("All graphs were saved in the graphs folder.")

@@ -81,3 +81,26 @@ Observation:
 The sequence appears chaotic. The starting values `0.500` and `0.501` are almost the same, but later the graphs become different. This shows sensitivity to initial conditions.
 
 Chaotic does not mean truly random. The sequence is deterministic because it follows a fixed formula, but small changes in `p0` can produce very different long-term behavior.
+
+## Extra Visualizations
+
+Graph files:
+
+- `graphs/bifurcation_diagram.png`
+- `graphs/cobweb_k2_8.png`
+- `graphs/cobweb_k3_2.png`
+- `graphs/cobweb_k3_8.png`
+
+Observation:
+The bifurcation diagram gives a global view of the logistic sequence. For smaller `k` values, the sequence approaches one value. As `k` increases, the stable value splits into cycles. For large `k` values, the behavior becomes chaotic.
+
+The cobweb diagrams show the step-by-step movement from `p_n` to `p_(n+1)`.
+
+## Extra Presentation Visuals
+
+The file `presentation_visuals.py` creates a separate set of slide-ready graphs in `presentation_graphs/`.
+
+- `process_map` explains how iteration works.
+- `bifurcation_diagram_presentation` shows the global transition from stability to chaos.
+- `cobweb_grid` compares convergence, cycles, and chaos.
+- `sensitivity_comparison` shows sensitive dependence on initial conditions.
