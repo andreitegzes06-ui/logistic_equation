@@ -1,13 +1,23 @@
 # Logistic Difference Equation Project
 
-This project studies the logistic difference equation:
+This project studies the logistic difference equation as a simple model of population growth:
 
 ```text
 p_(n+1) = k * p_n * (1 - p_n)
 ```
 
-The program calculates sequence values for different choices of `k` and `p0`.
-It prints the values in the terminal and saves graphs as PNG files.
+The value `p_n` represents the population in generation `n` as a fraction of the maximum population the environment can support. The parameter `k` controls how strongly the population grows from one generation to the next. By changing `k`, the model can show stable population growth, oscillations, period doubling, and chaotic population behavior.
+
+The program calculates population sequences for different choices of `k` and `p0`. It prints the values in the terminal and saves graphs as PNG files.
+
+## Ecological Interpretation
+
+- `p_n` is the population fraction in generation `n`.
+- `k` controls the growth rate.
+- `1 - p_n` represents resource limitation.
+- The model is useful for populations that reproduce in generations, such as insects.
+- For small `k`, the population stabilizes.
+- For larger `k`, the population can oscillate or become chaotic.
 
 ## Visual Preview
 
@@ -15,25 +25,25 @@ It prints the values in the terminal and saves graphs as PNG files.
 
 ![Bifurcation diagram](presentation_graphs/bifurcation_diagram_presentation.png)
 
-Shows how the logistic sequence changes as the growth parameter `k` increases: stable convergence, period doubling, and chaos.
+Shows how the population sequence changes as the growth parameter `k` increases: stable convergence, period doubling, and chaos.
 
 ### Iteration Process
 
 ![Process map](presentation_graphs/process_map.png)
 
-Explains the iteration process visually: start from `p0`, apply `f(p) = kp(1-p)`, get the next value, and repeat.
+Explains the population process visually: start from the current population `p_n`, include resource limitation `1 - p_n`, get the next generation `p_(n+1)`, and repeat.
 
 ### Cobweb Behavior
 
 ![Cobweb grid](presentation_graphs/cobweb_grid.png)
 
-Compares convergence, period-2 cycles, period doubling, and chaotic behavior using cobweb diagrams.
+Compares stable population growth, two-generation cycles, period doubling, and chaotic population behavior using cobweb diagrams.
 
 ### Sensitivity to Initial Conditions
 
 ![Sensitivity comparison](presentation_graphs/sensitivity_comparison.png)
 
-Shows how two very close initial values, `p0 = 0.500` and `p0 = 0.501`, eventually separate when `k = 3.8`.
+Shows how two very close starting populations, `p0 = 0.500` and `p0 = 0.501`, eventually separate when `k = 3.8`.
 
 ## Requirements
 
@@ -65,8 +75,8 @@ The program will:
 
 The project also creates a bifurcation diagram and cobweb diagrams.
 
-The bifurcation diagram shows how the long-term behavior changes when `k` changes.
-The cobweb diagrams show how each term is produced from the previous term.
+The bifurcation diagram shows how long-term population behavior changes when `k` changes.
+The cobweb diagrams show how one generation's population produces the next generation.
 
 ## Presentation Visuals
 
