@@ -58,8 +58,8 @@ def plot_curve_and_diagonal(ax, k):
     """Plot y = kx(1 - x) and y = x."""
     x = np.linspace(0, 1, 500)
     y = logistic_next(k, x)
-    ax.plot(x, y, color=BLUE, linewidth=2.4, label="y = kx(1 - x)")
-    ax.plot(x, x, color=PINK, linewidth=1.8, linestyle="--", label="y = x")
+    ax.plot(x, y, color=BLUE, linewidth=2.4, label="next population = kp(1 - p)")
+    ax.plot(x, x, color=PINK, linewidth=1.8, linestyle="--", label="same population level")
     ax.set_xlim(0, 1)
     ax.set_ylim(0, 1)
 
@@ -85,29 +85,36 @@ def process_map_visual():
     values = logistic_sequence(k, p0, 18)
 
     fig, axes = plt.subplots(1, 3, figsize=(16, 9), facecolor=BACKGROUND)
-    fig.suptitle("How the Logistic Map Iterates", color=TEXT, fontsize=22, y=0.94)
+    fig.suptitle("Population Growth with Limited Resources", color=TEXT, fontsize=22, y=0.94)
 
     ax = axes[0]
     style_axis(ax)
     plot_curve_and_diagonal(ax, k)
     ax.scatter([p0], [p0], color=YELLOW, s=70, zorder=5)
     ax.annotate(
-        "start p0",
+        "current population p_n",
         xy=(p0, p0),
         xytext=(0.12, 0.82),
         color=TEXT,
         arrowprops={"arrowstyle": "->", "color": YELLOW},
     )
     ax.annotate(
-        "apply f(p) = kp(1-p)",
+        "limited resources: 1 - p_n",
         xy=(p0, logistic_next(k, p0)),
         xytext=(0.06, 0.62),
         color=TEXT,
         arrowprops={"arrowstyle": "->", "color": BLUE},
     )
-    ax.set_title("A. Function Rule")
-    ax.set_xlabel("p_n")
-    ax.set_ylabel("p_(n+1)")
+    ax.annotate(
+        "next generation p_(n+1)",
+        xy=(p0, logistic_next(k, p0)),
+        xytext=(0.54, 0.96),
+        color=TEXT,
+        arrowprops={"arrowstyle": "->", "color": GREEN},
+    )
+    ax.set_title("A. Growth Rule")
+    ax.set_xlabel("current population fraction p_n")
+    ax.set_ylabel("next generation p_(n+1)")
     ax.legend(facecolor=PANEL, edgecolor="#30445f", labelcolor=TEXT, loc="lower right")
 
     ax = axes[1]
@@ -116,32 +123,39 @@ def process_map_visual():
     draw_cobweb(ax, k, p0, 12, linewidth=1.2)
     ax.scatter([p0], [logistic_next(k, p0)], color=YELLOW, s=60, zorder=5)
     ax.annotate(
-        "new value p1",
+        "next generation p_(n+1)",
         xy=(p0, logistic_next(k, p0)),
         xytext=(0.13, 0.92),
         color=TEXT,
         arrowprops={"arrowstyle": "->", "color": YELLOW},
     )
     ax.annotate(
-        "repeat",
+        "repeat for each generation",
         xy=(0.8, 0.8),
         xytext=(0.58, 0.28),
         color=TEXT,
         arrowprops={"arrowstyle": "->", "color": GREEN},
     )
-    ax.set_title("B. Cobweb Steps")
-    ax.set_xlabel("p_n")
-    ax.set_ylabel("p_(n+1)")
+    ax.annotate(
+        "high growth can overshoot\navailable resources",
+        xy=(0.82, logistic_next(k, 0.82)),
+        xytext=(0.38, 0.08),
+        color=TEXT,
+        arrowprops={"arrowstyle": "->", "color": ORANGE},
+    )
+    ax.set_title("B. Generation-to-Generation Steps")
+    ax.set_xlabel("current population fraction p_n")
+    ax.set_ylabel("next generation p_(n+1)")
 
     ax = axes[2]
     style_axis(ax)
     ax.plot(range(len(values)), values, color=GREEN, marker="o", markersize=5, linewidth=2)
     ax.set_ylim(0, 1)
-    ax.set_title("C. Sequence Timeline")
-    ax.set_xlabel("n")
-    ax.set_ylabel("p_n")
+    ax.set_title("C. Population History")
+    ax.set_xlabel("generation n")
+    ax.set_ylabel("population fraction p_n")
     ax.annotate(
-        "period-2 cycle",
+        "population alternates\nbetween high and low",
         xy=(12, values[12]),
         xytext=(4.5, 0.35),
         color=TEXT,
@@ -172,12 +186,12 @@ def bifurcation_diagram_presentation():
     ax.axvspan(2.5, 3.0, color=GREEN, alpha=0.08)
     ax.axvspan(3.0, 3.57, color=YELLOW, alpha=0.08)
     ax.axvspan(3.57, 4.0, color=PINK, alpha=0.08)
-    ax.text(2.62, 0.12, "stable fixed point", color=GREEN, fontsize=13)
-    ax.text(3.12, 0.12, "period doubling", color=YELLOW, fontsize=13)
-    ax.text(3.68, 0.12, "chaos", color=PINK, fontsize=13)
-    ax.set_title("From Stability to Chaos", fontsize=22)
+    ax.text(2.62, 0.12, "stable population", color=GREEN, fontsize=13)
+    ax.text(3.12, 0.12, "population cycles", color=YELLOW, fontsize=13)
+    ax.text(3.68, 0.12, "chaotic population", color=PINK, fontsize=13)
+    ax.set_title("From Stable Population to Chaos", fontsize=22)
     ax.set_xlabel("growth parameter k", fontsize=13)
-    ax.set_ylabel("long-term values of p_n", fontsize=13)
+    ax.set_ylabel("long-term population fraction p_n", fontsize=13)
     ax.set_xlim(2.5, 4.0)
     ax.set_ylim(0, 1)
     fig.tight_layout()
@@ -190,22 +204,22 @@ def cobweb_subplot(ax, k, p0, steps, title):
     plot_curve_and_diagonal(ax, k)
     draw_cobweb(ax, k, p0, steps, linewidth=0.75)
     ax.set_title(title)
-    ax.set_xlabel("p_n")
-    ax.set_ylabel("p_(n+1)")
+    ax.set_xlabel("current population fraction p_n")
+    ax.set_ylabel("next generation p_(n+1)")
     ax.text(0.04, 0.92, f"k = {k}", transform=ax.transAxes, color=YELLOW, fontsize=11)
 
 
 def cobweb_grid():
     """Create a 2x2 grid of cobweb diagrams."""
     examples = [
-        (2.8, 0.5, 30, "Converges"),
-        (3.2, 0.5, 30, "Period-2 Cycle"),
-        (3.45, 0.5, 35, "Period Doubling"),
-        (3.8, 0.5, 50, "Chaotic Motion"),
+        (2.8, 0.5, 30, "Stable Population Growth, k = 2.8"),
+        (3.2, 0.5, 30, "Population Oscillation, k = 3.2"),
+        (3.45, 0.5, 35, "Period Doubling in Population Growth\nk = 3.45"),
+        (3.8, 0.5, 50, "Chaotic Population Dynamics, k = 3.8"),
     ]
 
     fig, axes = plt.subplots(2, 2, figsize=(16, 9), facecolor=BACKGROUND)
-    fig.suptitle("Cobweb Views of Different Behaviors", color=TEXT, fontsize=22, y=0.96)
+    fig.suptitle("Cobweb Views of Population Growth Regimes", color=TEXT, fontsize=22, y=0.96)
     for ax, (k, p0, steps, title) in zip(axes.flat, examples):
         cobweb_subplot(ax, k, p0, steps, title)
 
@@ -232,7 +246,20 @@ def sensitivity_comparison():
         gridspec_kw={"height_ratios": [2, 1]},
         sharex=True,
     )
-    fig.suptitle("Sensitive Dependence on Initial Conditions", color=TEXT, fontsize=22, y=0.96)
+    fig.suptitle(
+        "Sensitive Dependence in Chaotic Population Growth",
+        color=TEXT,
+        fontsize=22,
+        y=0.97,
+    )
+    fig.text(
+        0.5,
+        0.925,
+        "Two almost identical starting populations can later produce different population histories.",
+        color=MUTED,
+        fontsize=14,
+        ha="center",
+    )
 
     ax = axes[0]
     style_axis(ax)
@@ -240,13 +267,13 @@ def sensitivity_comparison():
     ax.plot(values_b, color=PINK, linewidth=2, label="p0 = 0.501")
     ax.axvline(first_large_difference, color=YELLOW, linestyle="--", linewidth=1.5)
     ax.annotate(
-        "Tiny change in p0,\nlarge long-term difference",
+        "starting populations differ by 0.001\nof maximum possible population",
         xy=(first_large_difference, values_a[first_large_difference]),
         xytext=(first_large_difference + 8, 0.82),
         color=TEXT,
         arrowprops={"arrowstyle": "->", "color": YELLOW},
     )
-    ax.set_ylabel("p_n")
+    ax.set_ylabel("population fraction p_n")
     ax.set_ylim(0, 1)
     ax.legend(facecolor=PANEL, edgecolor="#30445f", labelcolor=TEXT)
 
@@ -255,36 +282,69 @@ def sensitivity_comparison():
     ax.plot(difference + 1e-8, color=YELLOW, linewidth=2)
     ax.axvline(first_large_difference, color=YELLOW, linestyle="--", linewidth=1.5)
     ax.set_yscale("log")
-    ax.set_xlabel("n")
-    ax.set_ylabel("|difference|")
+    ax.set_xlabel("generation n")
+    ax.set_ylabel("population difference")
 
-    fig.tight_layout(rect=(0, 0, 1, 0.93))
+    fig.tight_layout(rect=(0, 0, 1, 0.9))
     save_figure(fig, "sensitivity_comparison")
 
 
 def regime_summary():
     """Create a simple four-column visual summary."""
     examples = [
-        ("1 < k < 3", "convergence", 2.8, 0.5, 30, GREEN),
-        ("3 < k < 3.4", "period-2", 3.2, 0.5, 50, YELLOW),
-        ("3.4 < k < 3.5", "period doubling", 3.45, 0.5, 60, ORANGE),
-        ("3.6 < k < 4", "chaos", 3.8, 0.5, 100, PINK),
+        (
+            "1 < k < 3",
+            "Stable population",
+            "The population approaches\na steady level.",
+            2.8,
+            0.5,
+            30,
+            GREEN,
+        ),
+        (
+            "3 < k < 3.4",
+            "Two-generation cycle",
+            "The population alternates\nbetween high and low generations.",
+            3.2,
+            0.5,
+            50,
+            YELLOW,
+        ),
+        (
+            "3.4 < k < 3.5",
+            "More complex cycles",
+            "The population repeats\nthrough more values.",
+            3.45,
+            0.5,
+            60,
+            ORANGE,
+        ),
+        (
+            "3.6 < k < 4",
+            "Chaotic population",
+            "Small starting changes can lead\nto different long-term behavior.",
+            3.8,
+            0.5,
+            100,
+            PINK,
+        ),
     ]
 
     fig, axes = plt.subplots(1, 4, figsize=(16, 9), facecolor=BACKGROUND)
-    fig.suptitle("Summary of Logistic Map Regimes", color=TEXT, fontsize=22, y=0.92)
+    fig.suptitle("Population Growth Regimes", color=TEXT, fontsize=22, y=0.92)
 
-    for ax, (interval, phrase, k, p0, n, color) in zip(axes, examples):
+    for ax, (interval, phrase, description, k, p0, n, color) in zip(axes, examples):
         values = logistic_sequence(k, p0, n)
         style_axis(ax)
         ax.plot(values, color=color, marker="o", markersize=3, linewidth=1.5)
         ax.set_title(interval)
-        ax.set_xlabel("n")
+        ax.set_xlabel("generation n")
         ax.set_ylim(0, 1)
-        ax.text(0.07, 0.88, phrase, transform=ax.transAxes, color=TEXT, fontsize=15, weight="bold")
-        ax.text(0.07, 0.78, f"k = {k}", transform=ax.transAxes, color=MUTED, fontsize=12)
+        ax.text(0.07, 0.88, phrase, transform=ax.transAxes, color=TEXT, fontsize=14, weight="bold")
+        ax.text(0.07, 0.78, description, transform=ax.transAxes, color=MUTED, fontsize=9.5)
+        ax.text(0.07, 0.68, f"k = {k}", transform=ax.transAxes, color=MUTED, fontsize=12)
         if ax is axes[0]:
-            ax.set_ylabel("p_n")
+            ax.set_ylabel("population fraction p_n")
         else:
             ax.set_yticklabels([])
 
@@ -303,9 +363,9 @@ def animation_frames():
         style_axis(ax)
         plot_curve_and_diagonal(ax, k)
         draw_cobweb(ax, k, p0, frame + 1, linewidth=1.2)
-        ax.set_title(f"Cobweb Iteration Frame {frame:03d}")
-        ax.set_xlabel("p_n")
-        ax.set_ylabel("p_(n+1)")
+        ax.set_title(f"Population Cobweb Iteration Frame {frame:03d}")
+        ax.set_xlabel("current population fraction p_n")
+        ax.set_ylabel("next generation p_(n+1)")
         fig.tight_layout()
         fig.savefig(
             FRAME_FOLDER / f"frame_{frame:03d}.png",

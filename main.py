@@ -22,9 +22,9 @@ def plot_sequence(values, k, p0, filename):
 
     plt.figure(figsize=(8, 5))
     plt.plot(term_numbers, values, marker="o", markersize=3, linewidth=1)
-    plt.title(f"Logistic sequence: k = {k}, p0 = {p0}")
-    plt.xlabel("n")
-    plt.ylabel("p_n")
+    plt.title(f"Population growth model: k = {k}, p0 = {p0}")
+    plt.xlabel("generation n")
+    plt.ylabel("population fraction p_n")
     plt.grid(True)
     plt.ylim(0, 1)
     plt.tight_layout()
@@ -55,9 +55,9 @@ def plot_comparison(k, p0_a, p0_b, n, filename):
         linewidth=1,
         label=f"p0 = {p0_b:.3f}",
     )
-    plt.title(f"Comparison for k = {k}")
-    plt.xlabel("n")
-    plt.ylabel("p_n")
+    plt.title(f"Population sensitivity comparison, k = {k}")
+    plt.xlabel("generation n")
+    plt.ylabel("population fraction p_n")
     plt.grid(True)
     plt.ylim(0, 1)
     plt.legend()
@@ -89,9 +89,9 @@ def plot_bifurcation_diagram(filename):
     plt.style.use("dark_background")
     plt.figure(figsize=(9, 5))
     plt.scatter(k_values, p_values, s=0.2, color="white")
-    plt.title("Bifurcation Diagram for the Logistic Equation")
-    plt.xlabel("k")
-    plt.ylabel("p_n")
+    plt.title("Bifurcation Diagram for Population Growth")
+    plt.xlabel("growth parameter k")
+    plt.ylabel("long-term population fraction p_n")
     plt.grid(True, alpha=0.2)
     plt.tight_layout()
     plt.savefig(filename, dpi=200)
@@ -106,8 +106,8 @@ def plot_cobweb(k, p0, n, filename):
 
     plt.style.use("dark_background")
     plt.figure(figsize=(6, 6))
-    plt.plot(x_values, curve_values, color="#4cc9f0", label="y = kx(1 - x)")
-    plt.plot(x_values, x_values, color="#f72585", label="y = x")
+    plt.plot(x_values, curve_values, color="#4cc9f0", label="next population = kp(1 - p)")
+    plt.plot(x_values, x_values, color="#f72585", label="same population level")
 
     p = p0
 
@@ -118,9 +118,9 @@ def plot_cobweb(k, p0, n, filename):
         plt.plot([p, next_p], [next_p, next_p], color="white", linewidth=0.8)
         p = next_p
 
-    plt.title(f"Cobweb Diagram: k = {k}, p0 = {p0}")
-    plt.xlabel("p_n")
-    plt.ylabel("p_(n+1)")
+    plt.title(f"Population Cobweb Diagram: k = {k}, p0 = {p0}")
+    plt.xlabel("current population fraction p_n")
+    plt.ylabel("next generation population p_(n+1)")
     plt.xlim(0, 1)
     plt.ylim(0, 1)
     plt.grid(True, alpha=0.2)
